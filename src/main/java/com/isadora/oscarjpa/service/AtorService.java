@@ -15,4 +15,12 @@ public class AtorService {
     public List<Ator> litarTodos() {
         return atorRepository.findAll();
     }
+
+    public List<Ator> buscaNome(String nome) {
+        var optional =  atorRepository.findByNomeContaining(nome);
+        if (optional != null ){
+           return optional;
+        }
+        return List.of();
+    }
 }

@@ -50,9 +50,8 @@ public class AtorVencedorService {
         Map<String, Long> artistas = maisPremiados.stream()
                 .map(a -> a.getAtor().getNome())
                 .collect(Collectors.groupingBy(oscar -> oscar, Collectors.counting()));
-        //reunir os que tem mais de um valor
-
-
-        return  artistas;
+        var map = artistas.entrySet().stream().filter(a -> a.getValue() >1)
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        return  map;
     }
 }
