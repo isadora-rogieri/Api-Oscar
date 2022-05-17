@@ -4,7 +4,10 @@ package com.isadora.oscarjpa.controller;
 import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.service.AtorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,4 +26,5 @@ public class AtorController {
     public List<Ator> filterAtor(@PathVariable String  nome ){
         return atorService.buscaNome(nome);
     }
+
 }

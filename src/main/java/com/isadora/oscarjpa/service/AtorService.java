@@ -1,5 +1,6 @@
 package com.isadora.oscarjpa.service;
 
+import com.isadora.oscarjpa.exception.AtorJaCadastradoException;
 import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.repository.AtorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,20 @@ public class AtorService {
            return optional;
         }
         return List.of();
+    }
+
+    public Ator salvarNovoAtor(Ator ator) {
+
+        if(!this.atorRepository.existsByNome(ator.getNome())){
+            //return this.atorRepository.save(ator);
+        }else{
+           throw  new AtorJaCadastradoException();
+        }
+        return ator;
+    }
+
+    public void deletar(String nome) {
+        Ator ator = this.atorRepository.findByNome(nome);
+        this.atorRepository.delete(ator);
     }
 }

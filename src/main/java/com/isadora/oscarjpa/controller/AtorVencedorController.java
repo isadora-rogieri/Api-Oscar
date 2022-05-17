@@ -1,13 +1,14 @@
 package com.isadora.oscarjpa.controller;
 
 
+import com.isadora.oscarjpa.exception.AtorJaCadastradoException;
 import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.model.AtorVencedor;
 import com.isadora.oscarjpa.service.AtorVencedorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,29 @@ public class AtorVencedorController {
     @GetMapping("/mais-premiados")
     public Map<String, Long> litarVencecdoresDeMaisDeUmPremio(){
         return atorVencedorService.listarMaisDeUmPremio();
+    }
+
+    @GetMapping("/busca/{nome}")
+    public List<AtorVencedor> filterAtor(@PathVariable String  nome ){
+        return atorVencedorService.buscaNome(nome);
+    }
+    @PostMapping
+    public ResponseEntity salvarAtorVencedor(@RequestBody AtorVencedor atorVencedor){
+        this.atorVencedorService.salvarNovoPremio(atorVencedor);
+        ResponseEntity response = new ResponseEntity("Premio criado", HttpStatus.CREATED);
+
+        return response;
+
+    }
+    @ExceptionHandler
+    public ResponseEntity tratarAtorExistente(AtorJaCadastradoException e){
+        ResponseEntity response = new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        return  response;
+    }
+    @DeleteMapping("{id}")
+    public String deletarAtor(@PathVariable("id") Long id) {
+        this.atorVencedorService.deletar(id);
+        return "Ator Deletado!";
     }
 
 }

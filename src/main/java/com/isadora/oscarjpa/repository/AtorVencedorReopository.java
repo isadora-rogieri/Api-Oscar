@@ -10,5 +10,7 @@ import java.util.List;
 public interface AtorVencedorReopository extends JpaRepository<AtorVencedor, Long> {
 
     List<AtorVencedor> findByAtor_Sexo(SexoEnum sexoEnum);
+    List<AtorVencedor> findByAtor_NomeContaining(String nome);
+    AtorVencedor findOneById(Long id);
 
 }

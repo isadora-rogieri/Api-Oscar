@@ -1,8 +1,10 @@
 package com.isadora.oscarjpa.service;
 
+import com.isadora.oscarjpa.exception.AtorJaCadastradoException;
 import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.model.AtorVencedor;
 import com.isadora.oscarjpa.model.SexoEnum;
+import com.isadora.oscarjpa.repository.AtorRepository;
 import com.isadora.oscarjpa.repository.AtorVencedorReopository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ import java.util.stream.Collectors;
 public class AtorVencedorService {
     @Autowired
     private  AtorVencedorReopository atorVencedorReopository;
+
+    @Autowired
+    private AtorRepository atorRepository;
 
     public AtorVencedor maisJovem() {
         List<AtorVencedor> maisJovem =this.atorVencedorReopository.findByAtor_Sexo(SexoEnum.M);
@@ -54,4 +59,25 @@ public class AtorVencedorService {
                 .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
         return  map;
     }
+
+    public List<AtorVencedor> buscaNome(String nome) {
+        var optional =  atorVencedorReopository.findByAtor_NomeContaining(nome);
+        if (optional != null ){
+            return optional;
+        }
+        return List.of();
+    }
+
+    public AtorVencedor salvarNovoPremio(AtorVencedor atorVencedor) {
+        if(this.atorRepository.existsByNome(atorVencedor.getAtor().getNome())){
+            throw new AtorJaCadastradoException();
+        }
+        return this.atorVencedorReopository.save(atorVencedor);
+    }
+
+    public void deletar(Long id) {
+        AtorVencedor atorVencedor = this.atorVencedorReopository.findOneById(id);
+        this.atorVencedorReopository.delete(atorVencedor);
+    }
 }
+

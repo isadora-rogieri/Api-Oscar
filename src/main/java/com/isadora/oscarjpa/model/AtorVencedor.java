@@ -1,10 +1,6 @@
 package com.isadora.oscarjpa.model;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.ManyToAny;
-
 import java.util.Objects;
 
 
@@ -18,11 +14,11 @@ public class AtorVencedor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne //(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Oscar_id",referencedColumnName = "id")
 	private Oscar oscar;
 
-	@ManyToOne //(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn (name = "Ator_id", referencedColumnName = "id")
 	private Ator ator;
 	
