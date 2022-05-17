@@ -79,5 +79,12 @@ public class AtorVencedorService {
         AtorVencedor atorVencedor = this.atorVencedorReopository.findOneById(id);
         this.atorVencedorReopository.delete(atorVencedor);
     }
+
+    public void alterar(Long id, AtorVencedor atorVencedor) {
+        AtorVencedor atorVencedor1 = this.atorVencedorReopository.findOneById(atorVencedor.getId());
+        atorVencedor1.setAtor(atorVencedor.getAtor());
+        atorVencedor1.setOscar(atorVencedor.getOscar());
+        this.atorVencedorReopository.save(atorVencedor1);
+    }
 }
 

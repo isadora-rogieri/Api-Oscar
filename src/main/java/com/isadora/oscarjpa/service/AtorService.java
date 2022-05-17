@@ -28,7 +28,7 @@ public class AtorService {
     public Ator salvarNovoAtor(Ator ator) {
 
         if(!this.atorRepository.existsByNome(ator.getNome())){
-            //return this.atorRepository.save(ator);
+            this.atorRepository.save(ator);
         }else{
            throw  new AtorJaCadastradoException();
         }

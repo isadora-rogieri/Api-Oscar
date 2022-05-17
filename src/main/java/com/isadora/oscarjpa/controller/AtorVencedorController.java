@@ -63,5 +63,12 @@ public class AtorVencedorController {
         this.atorVencedorService.deletar(id);
         return "Ator Deletado!";
     }
+    @PutMapping("/{id}")
+    public String alterarAtorVencedor(@PathVariable("id") Long id, @RequestBody AtorVencedor atorVencedor){
+        this.atorVencedorService.alterar(id, atorVencedor);
+
+        return "Alterado com sucesso!";
+
+    }
 
 }

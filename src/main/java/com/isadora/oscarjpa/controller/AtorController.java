@@ -1,13 +1,13 @@
 package com.isadora.oscarjpa.controller;
 
 
+import com.isadora.oscarjpa.exception.AtorJaCadastradoException;
 import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.service.AtorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +25,24 @@ public class AtorController {
     @GetMapping("/busca/{nome}")
     public List<Ator> filterAtor(@PathVariable String  nome ){
         return atorService.buscaNome(nome);
+    }
+    @PostMapping
+    public ResponseEntity salvarAtor(@RequestBody Ator ator){
+        this.atorService.salvarNovoAtor(ator);
+        ResponseEntity response = new ResponseEntity("Ator criado", HttpStatus.CREATED);
+
+        return response;
+
+    }
+    @ExceptionHandler
+    public ResponseEntity tratarAtorExistente(AtorJaCadastradoException e){
+        ResponseEntity response = new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
+        return  response;
+    }
+    @DeleteMapping("{nome}")
+    public String deletarAtor(@PathVariable String nome){
+        this.atorService.deletar(nome);
+        return "Ator Deletado!";
     }
 
 }
