@@ -18,7 +18,7 @@ public class AtorVencedor {
 	@JoinColumn(name = "Oscar_id",referencedColumnName = "id")
 	private Oscar oscar;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn (name = "Ator_id", referencedColumnName = "id")
 	private Ator ator;
 	

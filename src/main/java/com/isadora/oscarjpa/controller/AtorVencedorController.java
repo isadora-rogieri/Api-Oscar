@@ -59,9 +59,9 @@ public class AtorVencedorController {
         return  response;
     }
     @DeleteMapping("{id}")
-    public String deletarAtor(@PathVariable("id") Long id) {
+    public String deletarAtorVencedor(@PathVariable("id") Long id) {
         this.atorVencedorService.deletar(id);
-        return "Ator Deletado!";
+        return "Premio Deletado!";
     }
     @PutMapping("/{id}")
     public String alterarAtorVencedor(@PathVariable("id") Long id, @RequestBody AtorVencedor atorVencedor){

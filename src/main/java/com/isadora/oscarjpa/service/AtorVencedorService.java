@@ -1,6 +1,5 @@
 package com.isadora.oscarjpa.service;
 
-import com.isadora.oscarjpa.exception.AtorJaCadastradoException;
 import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.model.AtorVencedor;
 import com.isadora.oscarjpa.model.SexoEnum;
@@ -69,10 +68,15 @@ public class AtorVencedorService {
     }
 
     public AtorVencedor salvarNovoPremio(AtorVencedor atorVencedor) {
-        if(this.atorRepository.existsByNome(atorVencedor.getAtor().getNome())){
-            throw new AtorJaCadastradoException();
+        AtorVencedor premio;
+        if(!this.atorRepository.existsByNome(atorVencedor.getAtor().getNome())){
+            atorVencedor.setAtor(atorVencedor.getAtor());
+            premio =   this.atorVencedorReopository.save(atorVencedor);
+        }else{
+            atorVencedor.setAtor(this.atorRepository.findByNome(atorVencedor.getAtor().getNome()));
+             premio=  this.atorVencedorReopository.save(atorVencedor);
         }
-        return this.atorVencedorReopository.save(atorVencedor);
+        return premio;
     }
 
     public void deletar(Long id) {
@@ -81,10 +85,11 @@ public class AtorVencedorService {
     }
 
     public void alterar(Long id, AtorVencedor atorVencedor) {
-        AtorVencedor atorVencedor1 = this.atorVencedorReopository.findOneById(atorVencedor.getId());
+        AtorVencedor atorVencedor1 = this.atorVencedorReopository.findOneById(id);
         atorVencedor1.setAtor(atorVencedor.getAtor());
         atorVencedor1.setOscar(atorVencedor.getOscar());
         this.atorVencedorReopository.save(atorVencedor1);
+
     }
 }
 
