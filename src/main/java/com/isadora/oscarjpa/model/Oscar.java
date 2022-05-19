@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -15,12 +17,18 @@ public class Oscar {
 	private Long id;
 
 	@Column(nullable = false)
+	@NotBlank(message = "Ano obrigatório")
+	@Size(min = 4, max = 4)
 	private int ano;
 
 	@Column(nullable = false)
+	@NotBlank(message = "Nome filme obrigatório")
+	@Size(min = 2, max = 100)
 	private String nomeFilme;
 
 	@Column(nullable = false)
+	@NotBlank(message = "Idade do Ator obrigatório")
+	@Size(min = 2, max = 3)
 	private int idadeAtor;
 
 	public Oscar(int ano, String nomeFilme, int idadeAtor) {

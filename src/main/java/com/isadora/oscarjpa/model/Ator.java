@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -19,10 +21,13 @@ public class Ator {
 	private Long id;
 	
 	@Column(nullable = false)
+	@NotBlank(message = "Nome obrigatório")
+	@Size(min = 5, max = 100)
 	private String nome;
 			
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
+	@NotBlank(message = "Sexo obrigatório")
 	private SexoEnum sexo;
 
 	public Ator(String nome, SexoEnum sexo) {
