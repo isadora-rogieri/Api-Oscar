@@ -41,9 +41,9 @@ public class AtorVencedorController {
         return atorVencedorService.listarMaisDeUmPremio();
     }
 
-    @GetMapping("/busca/{nome}")
+    @GetMapping("/buscaNomeAtor/{nome}")
     public List<AtorVencedor> filterAtor(@PathVariable String  nome ){
-        return atorVencedorService.buscaNome(nome);
+        return atorVencedorService.buscaNomeAtor(nome);
     }
     @PostMapping
     public ResponseEntity salvarAtorVencedor(@RequestBody AtorVencedor atorVencedor){

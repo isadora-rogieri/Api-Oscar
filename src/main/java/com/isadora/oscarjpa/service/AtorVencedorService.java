@@ -59,10 +59,13 @@ public class AtorVencedorService {
         return  map;
     }
 
-    public List<AtorVencedor> buscaNome(String nome) {
-        var optional =  atorVencedorReopository.findByAtor_NomeContaining(nome);
-        if (optional != null ){
-            return optional;
+    public List<AtorVencedor> buscaNomeAtor(String nome) {
+        var optional =  atorVencedorReopository.findAll();
+        List<AtorVencedor> result = optional.stream().filter((a) -> a.getAtor().getNome().toLowerCase()
+                .contains(nome.toLowerCase())).collect(Collectors.toList());
+
+        if (result != null ){
+            return result;
         }
         return List.of();
     }

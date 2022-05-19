@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AtorService {
@@ -18,9 +19,12 @@ public class AtorService {
     }
 
     public List<Ator> buscaNome(String nome) {
-        var optional =  atorRepository.findByNomeContaining(nome);
-        if (optional != null ){
-           return optional;
+        var optional =  atorRepository.findAll();
+        List<Ator> result = optional.stream().filter((a) -> a.getNome().toLowerCase()
+                .contains(nome.toLowerCase())).collect(Collectors.toList());
+
+        if (result != null){
+           return result;
         }
         return List.of();
     }
