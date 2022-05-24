@@ -7,9 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -27,7 +26,7 @@ public class Ator {
 			
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	@NotBlank(message = "Sexo obrigatório")
+	@NotNull(message = "Sexo obrigatório")
 	private SexoEnum sexo;
 
 	public Ator(String nome, SexoEnum sexo) {

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -17,9 +18,8 @@ public class Oscar {
 	private Long id;
 
 	@Column(nullable = false)
-	@NotBlank(message = "Ano obrigatório")
-	@Size(min = 4, max = 4)
-	private int ano;
+	@NotNull(message = "Ano obrigatório")
+	private Integer ano;
 
 	@Column(nullable = false)
 	@NotBlank(message = "Nome filme obrigatório")
@@ -27,11 +27,10 @@ public class Oscar {
 	private String nomeFilme;
 
 	@Column(nullable = false)
-	@NotBlank(message = "Idade do Ator obrigatório")
-	@Size(min = 2, max = 3)
-	private int idadeAtor;
+	@NotNull(message = "Idade do Ator obrigatório")
+	private Integer idadeAtor;
 
-	public Oscar(int ano, String nomeFilme, int idadeAtor) {
+	public Oscar(Integer ano, String nomeFilme, Integer idadeAtor) {
 		super();
 		
 		this.ano = ano;
@@ -49,7 +48,7 @@ public class Oscar {
 		this.id = id;
 	}
 
-	public int getAno() {
+	public Integer getAno() {
 		return ano;
 	}
 
@@ -65,7 +64,7 @@ public class Oscar {
 		this.nomeFilme = nomeFilme;
 	}
 
-	public int getIdadeAtor() {
+	public Integer getIdadeAtor() {
 		return idadeAtor;
 	}
 

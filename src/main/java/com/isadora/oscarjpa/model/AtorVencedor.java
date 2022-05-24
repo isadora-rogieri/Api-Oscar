@@ -1,6 +1,7 @@
 package com.isadora.oscarjpa.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.util.Objects;
 
 
@@ -16,10 +17,12 @@ public class AtorVencedor {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Oscar_id",referencedColumnName = "id")
+	@Valid
 	private Oscar oscar;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn (name = "Ator_id", referencedColumnName = "id")
+	@Valid
 	private Ator ator;
 	
 	
