@@ -15,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -33,17 +35,21 @@ public class AtorVencedorServiceTest {
 
     private AtorVencedor atorVencedor;
     private AtorVencedor atorVencedor2;
+    private AtorVencedor atorVencedor4;
 
     private List<AtorVencedor> atorVencedorList;
 
     @BeforeEach
     public void inicializar(){
 
-        Ator ator = new Ator("",SexoEnum.M);
+        Ator ator = new Ator("Leonardo",SexoEnum.M);
         Oscar oscar = new Oscar(2020,"Filme teste",40);
 
         Ator ator2 = new Ator("Juliana",SexoEnum.F);
         Oscar oscar2 = new Oscar(2021,"Filme teste2",30);
+
+        Ator ator4 = new Ator("Eduardo",SexoEnum.M);
+        Oscar oscar4 = new Oscar(2019,"Filme teste4",28);
 
         atorVencedor = new AtorVencedor(oscar,ator);
         atorVencedor.setId(Long.valueOf(1));
@@ -51,9 +57,13 @@ public class AtorVencedorServiceTest {
         atorVencedor2 = new AtorVencedor(oscar2,ator2);
         atorVencedor2.setId(Long.valueOf(2));
 
+        atorVencedor4 = new AtorVencedor(oscar4,ator4);
+        atorVencedor4.setId(Long.valueOf(4));
+
         atorVencedorList = new ArrayList<>();
         atorVencedorList.add(atorVencedor);
         atorVencedorList.add(atorVencedor2);
+        atorVencedorList.add(atorVencedor4);
 
     }
 
@@ -88,7 +98,7 @@ public class AtorVencedorServiceTest {
        List<AtorVencedor> artistas = atorVencedorService.litarTodos();
 
         assertNotNull(atorVencedorList);
-        assertEquals(2,atorVencedorList.size());
+        assertEquals(3,atorVencedorList.size());
     }
     @Test
     void BuscarPorNomeAtorVencedorTest(){
@@ -118,9 +128,22 @@ public class AtorVencedorServiceTest {
         assertEquals(oscar3, atorVencedor.getOscar());
         assertEquals(55, atorVencedor.getOscar().getIdadeAtor());
 
-
-
-
     }
+
+    @Test
+    void retonarAtorMaisJovem(){
+    AtorVencedor atorMaisjovem = new AtorVencedor();
+
+        when(atorVencedorReopository.findByAtor_Sexo(SexoEnum.M))
+                .thenReturn(Collections.singletonList(atorVencedorList.stream()
+                        .min(Comparator.comparingInt(a -> a.getOscar().getIdadeAtor())).orElseThrow()));
+        atorMaisjovem = atorVencedorService.maisJovem();
+
+
+        assertEquals(atorVencedor4.getOscar().getIdadeAtor(),atorMaisjovem.getOscar().getIdadeAtor());
+        assertTrue(atorMaisjovem.getOscar().getIdadeAtor() < 30);
+    }
+
+
 
 }
