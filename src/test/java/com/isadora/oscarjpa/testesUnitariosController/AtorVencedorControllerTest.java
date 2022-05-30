@@ -6,10 +6,15 @@ import com.isadora.oscarjpa.model.Ator;
 import com.isadora.oscarjpa.model.AtorVencedor;
 import com.isadora.oscarjpa.model.Oscar;
 import com.isadora.oscarjpa.model.SexoEnum;
+import com.isadora.oscarjpa.service.AtorService;
 import com.isadora.oscarjpa.service.AtorVencedorService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.Map;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,6 +39,8 @@ public class AtorVencedorControllerTest {
     @MockBean
     private AtorVencedorService atorVencedorService;
 
+
+
     @Autowired
     MockMvc mockMvc;
 
@@ -43,6 +50,7 @@ public class AtorVencedorControllerTest {
     private AtorVencedor atorVencedor;
     private AtorVencedor atorVencedor2;
     private AtorVencedor atorVencedor4;
+    private AtorVencedor atorVencedor5;
 
     private List<AtorVencedor> atorVencedorList;
 
@@ -55,6 +63,8 @@ public class AtorVencedorControllerTest {
         Ator ator2 = new Ator("Juliana",SexoEnum.F);
         Oscar oscar2 = new Oscar(2021,"Filme teste2",30);
 
+        Oscar oscar5 = new Oscar(2022,"Filme teste5",31);
+
         Ator ator4 = new Ator("Eduardo",SexoEnum.M);
         Oscar oscar4 = new Oscar(2019,"Filme teste4",28);
 
@@ -66,6 +76,8 @@ public class AtorVencedorControllerTest {
 
         atorVencedor4 = new AtorVencedor(oscar4,ator4);
         atorVencedor4.setId(Long.valueOf(4));
+        atorVencedor5 = new AtorVencedor(oscar5,ator2);
+        atorVencedor5.setId(Long.valueOf(5));
 
         atorVencedorList = new ArrayList<>();
         atorVencedorList.add(atorVencedor);
@@ -82,6 +94,30 @@ public class AtorVencedorControllerTest {
         this.mockMvc.perform(
                 MockMvcRequestBuilders.get("/vencedor")
         )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+    @Test
+    @WithMockUser
+    void retonarAtorMaisJovem() throws Exception {
+
+        when(atorVencedorService.maisJovem()).thenReturn(atorVencedor4);
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.get("/vencedor/mais-jovem")
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
+    @Test
+    @WithMockUser
+    void retonarAtrizMaisPremiada() throws Exception {
+
+        when(atorVencedorService.encontreAtrizMaisPremiada()).thenReturn(atorVencedor2.getAtor());
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.get("/vencedor/mais-premiada")
+                )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
