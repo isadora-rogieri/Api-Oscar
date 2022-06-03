@@ -8,6 +8,7 @@ import com.isadora.oscarjpa.model.Oscar;
 import com.isadora.oscarjpa.model.SexoEnum;
 import com.isadora.oscarjpa.service.AtorService;
 import com.isadora.oscarjpa.service.AtorVencedorService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static com.fasterxml.jackson.databind.type.LogicalType.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
+
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -135,6 +138,29 @@ public class AtorVencedorControllerTest {
                                 .content(objectMapper.writeValueAsBytes(atorVencedor))
                 ).andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isCreated());
+
+    }
+    @Test
+    @WithMockUser
+    void deletarPremio() throws Exception {
+
+        AtorVencedor aV = new AtorVencedor();
+        aV.setId(6L);
+        aV.setAtor(new Ator("Fernanda",SexoEnum.M));
+        aV.setOscar(new Oscar(2021,"Filme teste6",72));
+
+
+
+
+        this.mockMvc.perform(
+                        MockMvcRequestBuilders.delete("/vencedor/6")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.equalTo("Premio Deletado!")));
+
+        Mockito.verify(atorVencedorService).deletar(aV.getId());
 
     }
 
